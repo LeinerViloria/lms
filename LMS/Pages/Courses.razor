@@ -1,7 +1,66 @@
 ﻿@page "/cursos"
 
-<h3>Cursos</h3>
+@using System.Collections.Generic
+@using System.Linq
+
+<h3>Selecciona un idioma:</h3>
+
+<RadzenDropDown @bind-Value="@selectedLanguage" TValue="string" Data="@languageOptions" TextProperty="DisplayName" ValueProperty="LanguageCode" Style="width: 200px;">
+    <Template Context="Item">
+        <div class="d-flex">
+            <RadzenImage Style="width: 40px" Path="@Item.Image" />
+            <p style="margin-left: 10px;">@((Item as LanguageOption)!.DisplayName)</p>
+        </div>
+    </Template>
+    <ValueTemplate Context="Item">
+        <p>@((Item as LanguageOption)!.DisplayName)</p>
+    </ValueTemplate>
+</RadzenDropDown>
+
+@if (!string.IsNullOrEmpty(selectedLanguage))
+{
+    <div>
+        <h4>Información sobre el idioma seleccionado: @selectedLanguageDisplayName</h4>
+        <p><strong>Cantidad de personas que lo hablan:</strong> @languageInfo[selectedLanguage].SpeakersCount</p>
+        <p><strong>Ventajas:</strong> @languageInfo[selectedLanguage].Advantages</p>
+        <p><strong>Facilidad de aprendizaje:</strong> @languageInfo[selectedLanguage].EaseOfLearning</p>
+        <p><strong>Información relevante del curso:</strong> @languageInfo[selectedLanguage].CourseInformation</p>
+
+        <iframe width="560" height="315" src="@languageInfo[selectedLanguage].UrlVideo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+}
 
 @code {
+    private string selectedLanguage;
+    private string selectedLanguageDisplayName;
 
+    private Dictionary<string, LanguageInfo> languageInfo = new Dictionary<string, LanguageInfo>
+    {
+        { "EN", new LanguageInfo { LanguageCode = "EN", DisplayName = "Inglés", SpeakersCount = "Más de mil millones", Advantages = "Amplia disponibilidad de recursos, importante en negocios y viajes.", EaseOfLearning = "Variable dependiendo del idioma nativo, pero recursos abundantes para aprender.", CourseInformation = "Ofrecemos cursos desde principiantes hasta avanzados, enfocados en la comunicación oral y escrita.", UrlVideo="https://www.youtube.com/embed/t8VGoVYXZUw?si=7BaY5961SvSQKmJh" } },
+        { "PT", new LanguageInfo { LanguageCode = "PT", DisplayName = "Portugués", SpeakersCount = "Alrededor de 260 millones", Advantages = "Importante en negocios y turismo, idioma oficial en varios países.", EaseOfLearning = "Relativamente fácil para hablantes de otros idiomas romances.", CourseInformation = "Tenemos cursos diseñados para diferentes niveles de habilidad, con énfasis en la conversación y la gramática.", UrlVideo="https://www.youtube.com/embed/_RpSh13GzMg?si=BTX6_dd3-5x-nz_5" } }
+    };
+
+    private List<LanguageOption> languageOptions = new List<LanguageOption>
+    {
+        new LanguageOption { LanguageCode = "EN", DisplayName = "Inglés", Image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkBtgQ7b1tGZg6ysKzCdht0GF1e97o2hDv2qoeklrmGM10m_jnBW5uQpTmCSC8J6wkTG8&usqp=CAU" },
+        new LanguageOption { LanguageCode = "PT", DisplayName = "Portugués", Image="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAABa1BMVEXbGxv///8DfDwCk032x1LoODg+Q23EHBwAmVDXIR0AkU35yFL3ylP3zVTaABfnIyPbAADnKSnsNTjmNDT0sLD51NT/ylKwUz797+/nHR0tM2QAdi8AcygAeTWYa0PiKyvHyNEAgT7yr0rr7PBVWn3wo0bCAAC9ulHUwFHbDg7TAADlZDE3PGnNHBw3nE7qTDt+gZvsZD/nyMnumkPvikVobIvc3eTt29x9rpE4i1qKrE/gSSj0uk7oxFLpgDrs8u9xpk/dp6iVvKa0z7/WbG3NREcYgEjWgIJdnXjisbLS49qZr1BtpoXncTXkXi9Rn06vscDfNyPZjY/Fu1HLPkHf6uTeZmf5z8/KLTDzoqLALC7LamxEmm6QuaDWU1Tkv8DZiYtiok6ttFDHhkahcEPHWT/ucnKWmK1JTXXcXz8UHVghKV9hZYWLjqXylpbqS0uEcERMfkhheEbsZmahl0vvgIDGSTybYUF1fUerhq1DAAARKElEQVR4nNXd+VvbOBoAYAcnTeI4ITRthgK7lFBKHI52CsOZEMLRUphyl9IpbQd2d47tTNmZ2Znun7+yLcmyY8uSLTnw/ZQn7dPmfSR9OizJSkp6DH7sdDrvtr87zzpx/t32O/Dtx0H5/70i8d9eXDx+sZV9bMVM1hMz+UajUS43smcvOouLEn+FJGF7d+Ni21dm6xQnDMBsXG91nsn5JVKEm++f940Mj/nZPDqHCZzK6bEMpWhhe2NnZGS4D4SP0F/nKs2tjuimKVS4+/5iZPhvfXZ4hSE8rGx8OBbaLMUJ2xvLDs8rZONh5HZnXNjvEiXcvHDx3EIOnlOSHwX9MiHC9lLfiJtHCHmKz4WcORbSJAUId3eGh708LIzGswPkHQHJNbZwc7m7+LAwjs8uyO3YxpjCzecBPlMY12cbz2M2yFhCUH4BPABURQAt42ksYwxhYP00Q1NzgoSm8UOMuhpZ+PqC6lMFCk3jWeS8GlHYXqL4xlRVsBAYG8eJCjf7/PoH6NNUCULQd0RMOVGE7Z3gBNMHfeKFZlWNMpaLINwIraByhGZVfZmAEGQYhgKUIwRVlT/j8Ao3+igFSALlCBUjz1uMnEJaCxxTVflCUIzvJAp3KQXoqqEyhUo5yzVD5hFushegTCFnwuEQfssFlCgExfhCgrC9HNzJd9VQ2UKlvM3cNbIKuZqgfCHIqayNkVG4SSnAMV+gZKFiGIzzDTYhX45JRKgojPmGSbgUAShfqJSZphssQs4kmphQKX8vRvgtrQ0GApMQMvUa4cKdaMBEhCxDuFBhVGAyQgZimDBiFU1MGF5RQ4RLkYFJCUMzKl0YqZtIWBhGpAo3YgCTEyplatdPE0YZyYDQQKi5XO4on1dKIOQTG7QBHEW4S2mD/oNtE5db37uqt1ppGLW5+akj6UyDMgwPFrYpkwlfoKbOrk+2qtVqoZDGoet6sZieWDtSZCKNmeDJVLBwmW+6pM2u1AEu7RtA2ZxflViSxja/kKsj1LTLk3QQDyH12it5xuBuMUjIk2U0baVF5yFkek1aZQ1MqAHCXQqwz9v81j2+QgG1RNAK3UiJxkZAtgkQUnyeRqhd1klfoVCttuonk9ZX+sRErVksupjF5pQconHOI2QebmvqFZE5Td3V+qyZdqqWZh9gjvbna0BJ1NWJvBRjwCDcV8g8ltEuW1WHV6iv5MzeHgQU2sUF8svURNpB6vorOUTfpugnfM3cE+7hClqotvZmNfyHSIj+81Ipv9Z0jMU5GUIl7/fYxk94wdoT1nEBVlsrKvlHXqGJVKZqRac1HkkoRuOMTchYR7XZFirAatrt8xWaBTnVREY9vS+BWO6wCNtsHYV2gFJMoTCpegc5vkLTuJZGVVVKY2x0j966hbQ66hShdpkuoAp62T2ICxAC4xGuqkUJRGMrXEgbzPR1A/XCVc6cKrkDCHVzzO3X9ZXWUMaRQSx3bWfwCtsUn5NmtFkEbP7j737xz3krnoz6xdc1SNTFd/5GNkzItjCDkkxx/i41Mv5x9xUirgondq1peISv2dJMHZZgLcgQEnfnizCjil/q8CYbj5ApzWhXVdSQIgozX6NCrImvp1s0IVOa0VZQR1/8OqrwiTO6EV9Pn1GETPP6WQQsxBHiblF4z298CBayFSFshNX1q2p0YXFiFQqbgoHeHsMlZClCVEere5p2FV1YA0O4oqR66l60IYVMRThrV69CHZBz/4osBD+kNAeJq4KF7kIkhc8pQFyEKI+Cea6a+woLB/of+EY/EQ8GKuivV6xf0tTl5FPXdJ8QshUhbIQrGimsDHxeHAyPe5UKKSzt2/WhKDzZkOmUEDK1QnsBxqqjhHD0TYopBjMVsgxLc7IKkWiJjpC6vIaEsKeoHqikcPQHNmAq9XaAFCpHsFPcFywkC9ER7jAMZ7QruwgnNZdw4C2r8E2/SwjmGZIK0RnYYGGb6TmM/cSlYBehI7zngRw+hfGj5w/uu4VKCbbEI8FCpYGXbLCQZVIB+8LCiRYi/GkaxpBnGNwltIfguvA+0ZliYCGlBJ08Yw9nCpdqiPDRHRjTIULUEtPCR6czXiFHV1FoaeKEpQk7nYrPNajXR0JaV+GppGC8Jk6o7Euqpnj8DYXUmS+upCdWGVZzqkCh0rRqqfjxN5oJQ+EG0+IF2duLEqJeX/zgtOMSMk0MDzyVVIzQnmKIX3dD4xpbyLQpQdurEuMZqvDpNBT+5PkDn1qat6eJE8KzKXygaAvfs1RSOCbV1XDhwyEbOHQYLixZMwy9JhqIukSFvZJqLbsZMghTP36ygN94v/cT2g1R/KobzKaWkO1RRS5NjknpwtThnaGhaW8J+gtfFeXMg+HIzRKyZdKDgjMzDBWmUuN+W1x8hMqqLex+xhE37GxqCVmmFaq6bieaS5VN6Bt+wiNbuCZp5dQSsnT3eERzoOFQSeH4QxSp1AL6uEB8v0AKS0RIGtWAaoqEjI+b4CLbyaQTPxPCbz4N2fHvhdSjIRTjzudP447wyQQRaVlCax5sCpn6CtQdWrtlYKAVYVuI+sChBVePjz8PkUKdCFkdot1fmEKWNTZHSEQMofefkiI0Tm0h4ybEWyhUFFvItAR1O4VmQ1RYe8Pb2A6tHlFh7Q1xLq0T8TOLcNpPWCNCWi61ekSFeaus0x/69/i/IgnoFbD2DjHPuDNO9vhJ9IeKcW0KX7Nu50ZjmgAhmk9Mg+H2Ifr8K/H904AxTV7WmEaxZlAK+1bSsHHpU4syPW2OXX6xCm7aLLbUN/D78ZBxqQxh2RSy9femx17EuAocef9qjmp+WrA+myOcT7/Yg++n5mf7+0TnFoqVapTUEluiMeeHJtF3fghX9ccfHj5EY+yFw8MFPM3An98Ezg91KQdQyi+AkJZKXdu54FJbq1tY+YN1bvF5NLk5vhnGGRBSWqFHCNdpZruF16zCH7qFisQhjaJkgZB9z3rXWpv6H/T80LOLfHxhYQHPmMhAzw9Hnd8wJTGVmhMohXGzpRXe9VL1Nyj0ToEffXJmT2Tcf5DxCqWtl9pRHlRoJ+295w7qnjVvVUNPuT0NMWi9FDXDDJFWZK15Q+EzhXFUanngqMbpEXPn8BcPLDIJ4RPgTMb5CbKeWyDhSx4hevbUvayfGf2TRXgPCbsW9SWsQ0Fhh0sI9yQWnFXv39F2kweL4UK8T4Fohnk4eZJ2WOitwjizIKspsWSqoWo6+ke48HN3JUUP8mVVUjC7UJYpiaZ7/zbcEIW7RGfPUP+9MOEbDCQqKZxKS8qk5sK3wrZIg4pssuApRNRfgGRD7KkhZ0+4juLtQk4llbYXw4lTPqFnP42rECuV+1hzSM6YIPAaA+/i/x62QjnzCjvOFQrQRwjHpkQ6/S8uRJIIJ/ZOhz94PYqB+FEh2okhqzM0I8sphCO3dHVdg7mH2EVbGcBHq8YfDU1PD93Bg7b7DjDzBO+3XNWlF6EywyvUJom9idZgvIl/eqby4E+8Uefh4Y94JpV6+wBX0czdmg6JJVl7E8nIU4XdQNASbaC1a8iabRTniE2moxmfhzRvrgecv2Ft07eIsI5K2NXGLvQ9k77n7BG2P+rkjv3KwPVbV+c/eO+6v0IAn9hTiblSab8ob5GNDF6hqsLTJNUDtGdfd22GrgwMXH++dx9U18H7b97+MTpA+EDALezFObQbSsKRi7jCAwRDR7tO1L/cu6Ero/aW4f5+Dy9TQVUT79WXmmZChb5A7/J+tQ6+8hADw2l9CCi7jvK3QzPqBTcQEJn2tNt7n0mi1K4whlDFp0dx35/7Ek5E22YJoi58Y6k3uPtDu56iw3nE2mLu9/MQozManZN3YKYrspzjUkS8RE2xtY43KmpfAo/jZVzzidUmaoRyTq274jyaUNXWEbHqrIHnnn8VZKw4XULpFcqjstbXXHHKOT8kiPggd915GpUb+3Luc7CSWDss5SfwOeAkgGB+yDPH9xBRW0zvOWe5c+pvX/7KEGdIK6OETylNOYfWkgCac3yudRoX8SCNixG0RuJ5jaot/29+7dWrtXnP1L20Stw5IL2nt6L8NrrQvHIAn0Ss1kmjOVPWiyBIRam0OoHvjdDT4k8A+ws519q8MYlHN4Vqa8XnXgzMKOWnasS9GDU515v4CF/yrHn7FOOK7vT91fTkeg4ivXeb7M81ybtN1pLhKdaaN89zC7+aSt6/A5D1vUvrTjMkBLG6NpEmL+EpNhOqoZZwkOfZk79xvUUOxAvVarV1cmWfj9Ln5iaaRfL6HbMFJpJDUTR4nh8GEdW9lnsvEeWeKD09J+PaluA453kGTDcy3PWVLuoJ++xnwMzP8anGlbrrqj2f0ItNeXeZBYX1HJ95LwbdqB1ctQqBd+4B3tx+EpdEeoUdnv004QV5sFdvmdcmFty4Yro2v5948dnCRZ49UUwlqR6sXJ20dJBRq+agpticmFtbPepB6dlh7YnivQIyXGndXzqbWz2y7y/tlU5B+9pY9ybyRnJ30FKEWzz7S2+jEO4vFZZqbqDQ3iPMdjXUrRTCfd6Me/VvoRDt1ZfUEG+AEJ+3YDszcxuF6MwM27mnWyjE557k9Ii9FxJn16Q0xN4LifOH8VYybqyQOEMqemh6M4TkOWBBc8QbJoRXDsDz+BKyac+FrvP4Mqppr4XuOxVkZNNeCz33YjDdbXK7hJ67TZjup7lVQu/9NBLGpj0Wdt0xFHvp+6YJu+6JivNmp5so9Lnri+2+tlsj9LmvTfgEo6dCvzv3hI9reir0vTdR9Liml0L/uy9Fdxi9FAbcXyp4za2HwqA7aAUXYg+FgfcIi22JvRMG3wUtthB7J6Tc5y20EHsmpN3JLrRP7JmQeq8+4ytYbrSQ/m4E1vdb3GRhY5AqFDjF6JEw7B0lqbawbr9Hwq73y0V8V9CNFYa/K0jcLKonQpb3PdEfYnDU054Imd7ZFe89x70Vsr13jePdeTdNyPruPI73H94wIfP7D6n1lDmfJi9kf4cl58uAb4qQ5z2kQtaHkxbyvUtWxE6wpIWc7wOO+ub43gl53+ksoCkmK+R/L3f8+X6iwijvVo+9ZTFJoTHjd3l4mJDtdQI3Q6gEZJkQIT3bhBITFDaeURQ0YbwxeHLCwDQaLkwtxSAmJuxat+ARxlm2SUoYAgwTxugWExIGd4SMwtROVGIywoDhNo8wMjERYTiQQRi1oiYhDK2ibMKIGTUBYfl7hl/PIoxGlC8My6IcwkhzKenCBrWj5xSmNoeDZxoBAzjJQsOgDdX4handPt7JlFyhMUMZbEcSptrLlJTqR5QqLG/7LRzGE4Jeg68xyhSy9BIRhCDfUBpjgkKDMcfwC1O7zzlqqjRh+Zy1CfILwRCOvabKEvLU0AjC1CZzTpUjNPI8NTSKMPX6glKMmmxh+Yw5h0YWmmsbTAlHgpAvxUQXptq01qhJExrls+A1Q7FCszUGJ1U0iBMtLJ93bUKQKEy1l2hVVRMvNBpMEwlxQivjBBs1wUIjQoaJLQRVdZlqFCc0yh8Y5xGChZYxuKqqgoRG+TRaAxQhBMbngeU4lhVBNKImGFFCMFZdDpgcj2WzsY1GeTtG/RQkBMadYb++wxTGM5YbW7F9QoRm39HXXVltYTY7Ew1plLPHkfMnGUKEIDYvRjy1FQmjFKRRbnyI2fxwiBKCgtxYdiEJIV9BAt52J8r4zD/ECUHsbhAl6RIyI83SO+aa4YaFUGHKLMmdkZFhP2E40iiXG2cdIY2PCNFCMzbfP+8bGfYRBisNoFNOjwWkzq6QITQDVNjTxyBmQpXAVm5cb3Vk6MyQJTRj8f7xiw+P7eiSzuQbjQawZc9edBaFNjxPyBTCGHzZ6XTenZ67gN+dvgPffhTd6Hzi/4uM5MCQlBAZAAAAAElFTkSuQmCC" }
+    };
+
+    public class LanguageInfo
+    {
+        public string LanguageCode { get; set; }
+        public string DisplayName { get; set; }
+        public string SpeakersCount { get; set; }
+        public string Advantages { get; set; }
+        public string EaseOfLearning { get; set; }
+        public string CourseInformation { get; set; }
+        public string UrlVideo { get; set; }
+    }
+
+    public class LanguageOption
+    {
+        public string LanguageCode { get; set; }
+        public string DisplayName { get; set; }
+        public string Image { get; set; }
+    }
 }
