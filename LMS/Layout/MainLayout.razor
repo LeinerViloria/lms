@@ -1,10 +1,12 @@
 ﻿@inherits LayoutComponentBase
 
+@inject NavigationManager Navigation
+
 <RadzenLayout>
     <RadzenHeader>
         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
             <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)" />
-            <RadzenLabel Text="Centro de idiomas" />
+            <RadzenLabel Text="Centro de idiomas" @onclick="NavigateToHome" class="main-label" />
         </RadzenStack>
     </RadzenHeader>
     <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
@@ -26,4 +28,9 @@
 
 @code {
     bool sidebar1Expanded = true;
+
+    void NavigateToHome()
+    {
+        Navigation.NavigateTo("/");
+    }
 }

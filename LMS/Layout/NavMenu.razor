@@ -1,8 +1,10 @@
 ﻿@using LMS.Shared.DTOS
 
+@inject NavigationManager Navigation
+
 @foreach(var Item in Data)
 {
-    <RadzenPanelMenuItem Text="@Item.Title" Icon="@Item.Icon">
+    <RadzenPanelMenuItem Text="@Item.Title" Icon="@Item.Icon" Click="@(() => Navigate(Item?.Url))">
         @if(Item.SubMenus is not null)
         {
             <NavMenu Menu="@Item.SubMenus.ToList()" />
@@ -15,6 +17,14 @@
 {
     [Parameter] public List<MenuItemDTO>? Menu { get; set; }
     List<MenuItemDTO> Data { get; set; } = null!;
+
+    private void Navigate(string? Url)
+    {
+        if (string.IsNullOrEmpty(Url))
+            return;
+
+        Navigation.NavigateTo(Url);
+    }
 
     protected override void OnInitialized()
     {
@@ -29,11 +39,35 @@
                     },
                     new(){
                         Title = "Cursos",
-                        Icon = "home"
+                        Icon = "home",
+                        Url = "cursos"
                     },
                     new(){
-                        Title = "Inscripciones",
-                        Icon = "home"
+                        Title = "Pasos",
+                        Icon = "home",
+                        SubMenus = new List<MenuItemDTO>()
+                        {
+                            new(){
+                                Title = "Paso 1: Pre-Inscripcion",
+                                Icon = "home"
+                            },
+                            new(){
+                                Title = "Paso 2: Recibo de pago",
+                                Icon = "home"
+                            },
+                            new(){
+                                Title = "Paso 3: Inscripciones",
+                                Icon = "home"
+                            },
+                            new(){
+                                Title = "Paso 4: Adjuntar documentos",
+                                Icon = "home"
+                            },
+                            new(){
+                                Title = "Estado de su inscripcion",
+                                Icon = "home"
+                            }
+                        }
                     }
                 }
             },
