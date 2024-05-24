@@ -3,6 +3,14 @@
 @using System.Collections.Generic
 @using System.Linq
 
+<div class="mb-2">
+    <RadzenBreadCrumb>
+        <RadzenBreadCrumbItem Path="/" Text="Home" />
+        <RadzenBreadCrumbItem Text="Proceso de inscripcion de matricula" />
+        <RadzenBreadCrumbItem Text="Cursos" />
+    </RadzenBreadCrumb>
+</div>
+
 <h3>Selecciona un idioma:</h3>
 
 <RadzenDropDown @bind-Value="@selectedLanguage" TValue="string" Data="@languageOptions" TextProperty="DisplayName" ValueProperty="LanguageCode" Style="width: 200px;">
