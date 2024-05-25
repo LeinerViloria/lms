@@ -8,3 +8,14 @@
         <RadzenBreadCrumbItem Text="Paso 2: Recibo de pago" />
     </RadzenBreadCrumb>
 </div>
+
+<RadzenNumeric @bind-Value=@NumeroIdentificacion Min="0" Placeholder="Numero de identificacion" />
+
+<RadzenButton Text="Buscar" />
+
+<p>PDF con el recibo</p>
+
+@code
+{
+    int NumeroIdentificacion { get; set; }
+}

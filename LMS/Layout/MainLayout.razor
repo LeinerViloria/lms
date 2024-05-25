@@ -18,7 +18,16 @@
     </RadzenSidebar>
     <RadzenBody>
         <div class="rz-p-4">
-            @Body
+            <ErrorBoundary>
+                <ChildContent>
+                    @Body
+                </ChildContent>
+                <ErrorContent Context="Error">
+                    <p>Ocurrió un error</p>
+                    <p>@Error.Message</p>
+                    <p>@Error.InnerException</p>
+                </ErrorContent>
+            </ErrorBoundary>
         </div>
     </RadzenBody>
     <RadzenFooter>
