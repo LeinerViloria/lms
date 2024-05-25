@@ -1,0 +1,74 @@
+﻿@page "/step4"
+
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="mb-2">
+    <RadzenBreadCrumb>
+        <RadzenBreadCrumbItem Path="/" Text="Home" />
+        <RadzenBreadCrumbItem Text="Proceso de inscripcion de matricula" />
+        <RadzenBreadCrumbItem Text="Pasos" />
+        <RadzenBreadCrumbItem Text="Paso 4: Adjuntar documentos" />
+    </RadzenBreadCrumb>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <RadzenCard>
+            <RadzenLabel Text="Numero de formulario" />
+            <RadzenNumeric @bind-Value=@NumeroFormulario Min="0" class="mb-2" Placeholder="Numero de formulario" />
+
+            <RadzenText TextStyle="TextStyle.Subtitle2" TagName="TagName.H3">Arrastre archivos para subir</RadzenText>
+            <RadzenUpload id="ddUpload" @ref="uploadDD" ChooseText="Arrastre o elija archivos para subir" Auto="false" Multiple="true" Url="upload/multiple" InputAttributes="@(new Dictionary<string,object>(){ { "aria-label", "select file" }})"
+                          Progress=@(args => OnProgress(args, "Drag and drop files to upload")) class="w-100" />
+            <RadzenButton Text="Subir" Click=@(args => uploadDD.Upload()) class="d-block mt-4" />
+        </RadzenCard>
+    </div>
+</div>
+
+@code {
+    RadzenUpload upload;
+    RadzenUpload uploadDD;
+
+    int progress;
+    int NumeroFormulario { get; set; }
+    bool showProgress;
+    bool showComplete;
+    string completionMessage;
+    bool cancelUpload = false;
+
+    void OnProgress(UploadProgressArgs args, string name)
+    {
+    }
+
+    void CompleteUpload(UploadCompleteEventArgs args)
+    {
+        if (!args.Cancelled)
+            completionMessage = "Upload Complete!";
+        else
+            completionMessage = "Upload Cancelled!";
+
+        showProgress = false;
+        showComplete = true;
+    }
+
+    void TrackProgress(UploadProgressArgs args)
+    {
+        showProgress = true;
+        showComplete = false;
+        progress = args.Progress;
+
+        // cancel upload
+        args.Cancel = cancelUpload;
+
+        // reset cancel flag
+        cancelUpload = false;
+    }
+
+    void CancelUpload()
+    {
+        cancelUpload = true;
+    }
+
+    int customParameter = 1;
+
+}
