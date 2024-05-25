@@ -1,0 +1,54 @@
+﻿@page "/questions"
+
+@using System.Collections.Generic
+
+<div class="mb-2">
+    <RadzenBreadCrumb>
+        <RadzenBreadCrumbItem Path="/" Text="Home" />
+        <RadzenBreadCrumbItem Text="Materiales de estudio" />
+        <RadzenBreadCrumbItem Text="Preguntas y evaluaciones" />
+    </RadzenBreadCrumb>
+</div>
+
+<div class="preguntas-container">
+    <RadzenDropDown TValue="string" Data="@idiomas" TextProperty="Nombre" ValueProperty="Id" @bind-Value="@idiomaSeleccionado">
+        <Template Context="idioma">
+            <div style="padding: 5px;">@idioma.Nombre</div>
+        </Template>
+    </RadzenDropDown>
+
+    <RadzenGrid Data="@preguntas" TItem="Pregunta">
+        <Columns>
+            <RadzenGridColumn TItem="Pregunta" Property="Enunciado" Title="Enunciado" />
+            <RadzenGridColumn TItem="Pregunta" Property="MaterialEstudio" Title="Material de Estudio" />
+        </Columns>
+    </RadzenGrid>
+</div>
+
+@code {
+    class Idioma
+    {
+        public string Id { get; set; }
+        public string Nombre { get; set; }
+    }
+
+    class Pregunta
+    {
+        public string Enunciado { get; set; }
+        public string MaterialEstudio { get; set; }
+    }
+
+    List<Idioma> idiomas = new List<Idioma>
+    {
+        new Idioma { Id = "ingles", Nombre = "Inglés" },
+        new Idioma { Id = "portugues", Nombre = "Portugués" }
+    };
+
+    string idiomaSeleccionado = "ingles";
+
+    List<Pregunta> preguntas = new List<Pregunta>
+    {
+        new Pregunta { Enunciado = "¿Cuál es el verbo 'to be' en pasado simple?", MaterialEstudio = "Material de estudio para verbos en inglés" },
+        new Pregunta { Enunciado = "¿Cómo se dice 'hola' en portugués?", MaterialEstudio = "Material de estudio para saludos en portugués" }
+    };
+}
