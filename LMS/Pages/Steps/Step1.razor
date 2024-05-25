@@ -68,7 +68,18 @@
     </div>
 </div>
 
+<div class="d-flex justify-content-end">
+    <RadzenButton Text="Siguiente" Click="Navigate" />
+</div>
+
 @code {
+    [Inject] public NavigationManager NavigationManager { get; set; } = null!;
+
+    void Navigate()
+    {
+        NavigationManager.NavigateTo("step2");
+    }
+
     int NumeroIdentificacion { get; set; }
     // Define las listas de opciones
     List<TipoInscripcion> tiposInscripcion = new List<TipoInscripcion>
