@@ -8,3 +8,125 @@
         <RadzenBreadCrumbItem Text="Paso 1: Pre-Inscripción" />
     </RadzenBreadCrumb>
 </div>
+
+<div class="row">
+    <div class="col-12">
+        <fieldset class="border p-2 mb-2">
+            <legend class="w-auto">Datos de la pre-inscripcion:</legend>
+            <div class="d-flex">
+                <div class="mb-2 p-2">
+                    <RadzenLabel Text="Tipos de inscripcion:" />
+                    <RadzenDropDown Data="@tiposInscripcion" TextProperty="Nombre" AllowClear="true" ValueProperty="Id" TValue="string" />
+                </div>
+                <div class="mb-2 p-2">
+                    <RadzenTextBox Placeholder="Modalidad" ReadOnly="true" Value="Centro de idiomas" />
+                </div>
+                <div class="mb-2 p-2">
+                    <RadzenTextBox Placeholder="Estrategia metodológica" ReadOnly="true" Value="Presencial" />
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-12">
+        <fieldset class="border p-2 mb-2">
+            <legend class="w-auto">Datos del programa académico al que inspira:</legend>
+            <div class="d-flex">
+                <div class="mb-2 p-2">
+                    <RadzenTextBox Placeholder="Cubrimiento" ReadOnly="true" Value="Sincelejo - Sucre" />
+                </div>
+                <div class="mb-2 p-2">
+                    <RadzenDropDown Data="@programasAcademicos" TextProperty="Nombre" AllowClear="true" Placeholder="Programa académico" ValueProperty="Id" TValue="string">
+                        <ValueTemplate Context="Item">
+                            <p style="width:152px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@Item.Nombre</p>
+                        </ValueTemplate>
+                    </RadzenDropDown>
+                </div>
+                <div class="mb-2 p-2">
+                    <RadzenTextBox Placeholder="Periodo académico" ReadOnly="true" Value="20242" />
+                </div>
+                <div class="mb-2 p-2">
+                    <RadzenDropDown Data="@planesEstudio" TextProperty="Nombre" AllowClear="true" Placeholder="Planes de estudio" ValueProperty="Id" TValue="string" />
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <fieldset class="border p-2 mb-2">
+            <legend class="w-auto">Identificacion:</legend>
+            <div class="d-flex">
+                <div class="mb-2 p-2">
+                    <RadzenDropDown Data="@tiposIdentificacion" Placeholder="Tipo de identificacion" AllowClear="true" TextProperty="Nombre" ValueProperty="Id" TValue="string" />
+                </div>
+                <div class="mb-2 p-2">
+                    <RadzenNumeric @bind-Value=@NumeroIdentificacion Min="0" Placeholder="Numero de identificacion" />
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+@code {
+    int NumeroIdentificacion { get; set; }
+    // Define las listas de opciones
+    List<TipoInscripcion> tiposInscripcion = new List<TipoInscripcion>
+    {
+        new TipoInscripcion { Id = "1", Nombre = "Normal" },
+        new TipoInscripcion { Id = "2", Nombre = "Transferencia interna" },
+        new TipoInscripcion { Id = "3", Nombre = "Homologación" },
+        new TipoInscripcion { Id = "4", Nombre = "Acompañamiento" }
+    };
+
+    List<ProgramaAcademico> programasAcademicos = new List<ProgramaAcademico>
+    {
+        new ProgramaAcademico { Id = "1", Nombre = "Curso de ingles intensivo - A1 A2 B1" },
+        new ProgramaAcademico { Id = "2", Nombre = "Ingles B2.1" },
+        new ProgramaAcademico { Id = "3", Nombre = "Ingles B2.2" },
+        new ProgramaAcademico { Id = "4", Nombre = "Ingles C1.1" },
+        new ProgramaAcademico { Id = "5", Nombre = "Ingles C1.2" },
+        new ProgramaAcademico { Id = "6", Nombre = "Portugues intensivo" }
+    };
+
+    List<PlanEstudio> planesEstudio = new List<PlanEstudio>
+    {
+        new PlanEstudio { Id = "1", Nombre = "Curso de nocturno" },
+        new PlanEstudio { Id = "2", Nombre = "Curso de Tarde" },
+        new PlanEstudio { Id = "3", Nombre = "Curso de Noche" }
+    };
+
+    List<TipoIdentificacion> tiposIdentificacion = new List<TipoIdentificacion>
+    {
+        new TipoIdentificacion { Id = "1", Nombre = "Cedula de ciudadania" },
+        new TipoIdentificacion { Id = "2", Nombre = "Documento extranjero" },
+        new TipoIdentificacion { Id = "3", Nombre = "NIT" },
+        new TipoIdentificacion { Id = "4", Nombre = "Pasaporte" },
+        new TipoIdentificacion { Id = "5", Nombre = "Tarjeta de identidad" }
+    };
+
+    // Define las clases para los datos
+    public class TipoInscripcion
+    {
+        public string Id { get; set; }
+        public string Nombre { get; set; }
+    }
+
+    public class ProgramaAcademico
+    {
+        public string Id { get; set; }
+        public string Nombre { get; set; }
+    }
+
+    public class PlanEstudio
+    {
+        public string Id { get; set; }
+        public string Nombre { get; set; }
+    }
+
+    public class TipoIdentificacion
+    {
+        public string Id { get; set; }
+        public string Nombre { get; set; }
+    }
+}
