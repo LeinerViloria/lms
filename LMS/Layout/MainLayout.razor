@@ -9,18 +9,25 @@
             <RadzenLabel Text="Centro de idiomas" @onclick="NavigateToHome" class="main-label" />
         </RadzenStack>
     </RadzenHeader>
-    <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
 
-        <RadzenPanelMenu>
-            <NavMenu />
-        </RadzenPanelMenu>
+    @if(!IsExternalView)
+    {
+        <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
 
-    </RadzenSidebar>
+            <RadzenPanelMenu>
+                <NavMenu />
+            </RadzenPanelMenu>
+
+        </RadzenSidebar>
+    }
+
     <RadzenBody>
         <div class="rz-p-4">
             <ErrorBoundary>
                 <ChildContent>
-                    @Body
+                    <CascadingValue Value="this">
+                        @Body
+                    </CascadingValue>
                 </ChildContent>
                 <ErrorContent Context="Error">
                     <p>Ocurrió un error</p>
@@ -30,16 +37,27 @@
             </ErrorBoundary>
         </div>
     </RadzenBody>
-    <RadzenFooter>
-        <RadzenLabel Text="Centro de idiomas - CECAR" />
-    </RadzenFooter>
+
+    @if(!IsExternalView)
+    {
+        <RadzenFooter>
+            <RadzenLabel Text="Centro de idiomas - CECAR" />
+        </RadzenFooter>
+    }
 </RadzenLayout>
 
 @code {
     bool sidebar1Expanded = true;
+    bool IsExternalView { get; set; }
 
     void NavigateToHome()
     {
         Navigation.NavigateTo("/");
+    }
+
+    public void SetExternalView(bool IsExternalView)
+    {
+        this.IsExternalView = IsExternalView;
+        StateHasChanged();
     }
 }

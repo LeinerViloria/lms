@@ -1,5 +1,7 @@
 ﻿@page "/login"
 
+@implements IDisposable
+
 <RadzenCard class="rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12" style="max-width: 600px;">
     <RadzenTemplateForm Data=@("LoginWithDefaultValues")>
         <RadzenLogin AllowRegister="true" AllowResetPassword="true" Username=@userName Password=@password
@@ -14,6 +16,19 @@
     string userName = "admin";
     string password = "admin";
     bool rememberMe = true;
+    [CascadingParameter] public MainLayout MainLayout { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        MainLayout.SetExternalView(true);
+        base.OnInitialized();
+    }
+
+    public void Dispose()
+    {
+        MainLayout.SetExternalView(false);
+        GC.SuppressFinalize(this);
+    }
 
     void OnLogin(LoginArgs args, string name)
     {
