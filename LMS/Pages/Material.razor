@@ -1,0 +1,103 @@
+﻿@page "/material"
+
+@using System.Collections.Generic
+
+<div class="mb-2">
+    <RadzenBreadCrumb>
+        <RadzenBreadCrumbItem Path="/" Text="Home" />
+        <RadzenBreadCrumbItem Text="Materiales de estudio" />
+        <RadzenBreadCrumbItem Text="Materiales" />
+    </RadzenBreadCrumb>
+</div>
+
+<RadzenDropDown TValue="string" ValueChanged="OnChange" Value="idiomaSeleccionado" Data="@idiomas" TextProperty="Nombre" ValueProperty="Nombre" Style="width: 200px;">
+    <Template Context="idioma">
+        @idioma.Nombre
+    </Template>
+</RadzenDropDown>
+
+@if (cursoSeleccionado != null)
+{
+    <div class="curso-detalles">
+        <h2>@cursoSeleccionado.Idioma</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Curso</th>
+                    <th>Profesor</th>
+                    <th>Horario</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@cursoSeleccionado.Descripcion</td>
+                    <td>@cursoSeleccionado.Profesor</td>
+                    <td>@cursoSeleccionado.Horario</td>
+                    <td>@cursoSeleccionado.InformacionAdicional</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    List<Idioma> idiomas = new List<Idioma>
+    {
+        new Idioma { Nombre = "Inglés" },
+        new Idioma { Nombre = "Portugués" }
+    };
+    string idiomaSeleccionado;
+    CursoIdioma cursoSeleccionado;
+
+    void OnChange(string Item)
+    {
+        idiomaSeleccionado = Item;
+        cursoSeleccionado = ObtenerDetalleCurso(idiomaSeleccionado);
+        StateHasChanged();
+    }
+
+    class Idioma
+    {
+        public string Nombre { get; set; }
+    }
+
+    class CursoIdioma
+    {
+        public string Idioma { get; set; }
+        public string Descripcion { get; set; }
+        public string Profesor { get; set; }
+        public string Horario { get; set; }
+        public string InformacionAdicional { get; set; }
+    }
+
+    CursoIdioma ObtenerDetalleCurso(string idioma)
+    {
+        return idioma switch
+        {
+            "Inglés" => new CursoIdioma
+                {
+                    Idioma = "Inglés",
+                    Descripcion = "Curso de Inglés Intermedio",
+                    Profesor = "John Smith",
+                    Horario = "Lunes y Miércoles, 18:00 - 20:00",
+                    InformacionAdicional = "Los materiales de estudio incluyen libros, videos y recursos en línea para mejorar tu fluidez en inglés."
+                },
+            "Portugués" => new CursoIdioma
+                {
+                    Idioma = "Portugués",
+                    Descripcion = "Curso de Portugués Avanzado",
+                    Profesor = "Maria Silva",
+                    Horario = "Martes y Jueves, 17:00 - 19:00",
+                    InformacionAdicional = "Los materiales de estudio incluyen libros, audios y actividades interactivas para mejorar tu habilidad en portugués."
+                },
+            _ => null,
+        };
+    }
+
+    protected override void OnInitialized()
+    {
+        idiomaSeleccionado = idiomas.First().Nombre;
+        cursoSeleccionado = ObtenerDetalleCurso(idiomaSeleccionado);
+    }
+}
