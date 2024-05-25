@@ -1,0 +1,74 @@
+﻿@page "/inscription-status"
+
+@using System.Collections.Generic
+
+<div class="mb-2">
+    <RadzenBreadCrumb>
+        <RadzenBreadCrumbItem Path="/" Text="Home" />
+        <RadzenBreadCrumbItem Text="Proceso de inscripcion de matricula" />
+        <RadzenBreadCrumbItem Text="Pasos" />
+        <RadzenBreadCrumbItem Text="Estado de su inscripción" />
+    </RadzenBreadCrumb>
+</div>
+
+<RadzenTextBox Placeholder="Número de Documento" @bind-Value="@searchQuery"></RadzenTextBox>
+<RadzenButton Text="Buscar" Click="@BuscarFormularios"></RadzenButton>
+
+<RadzenGrid Data="@formularios" TItem="Formulario">
+    <Columns>
+        <RadzenGridColumn TItem="Formulario" Property="Nombre" Title="Formulario" />
+        <RadzenGridColumn TItem="Formulario" Property="Periodo" Title="Periodo" />
+        <RadzenGridColumn TItem="Formulario" Property="NombreEstudiante" Title="Nombre" />
+        <RadzenGridColumn TItem="Formulario" Property="CodigoPrograma" Title="Cod. Programa" />
+        <RadzenGridColumn TItem="Formulario" Property="ProgramaAcademico" Title="Programa Académico" />
+        <RadzenGridColumn TItem="Formulario" Property="Estado" Title="Estado" />
+    </Columns>
+</RadzenGrid>
+
+@code {
+    private string searchQuery;
+    private List<Formulario> formularios = new List<Formulario>();
+
+    protected override void OnInitialized()
+    {
+        // Se carga información quemada para propósitos de ejemplo
+        formularios = new List<Formulario>
+        {
+            new Formulario
+            {
+                Nombre = "Formulario de Inscripción",
+                Periodo = "20241",
+                NombreEstudiante = "Juan Pérez",
+                CodigoPrograma = "12345",
+                ProgramaAcademico = "Ingeniería de Software",
+                Estado = "Pagado"
+            },
+            new Formulario
+            {
+                Nombre = "Formulario de Matrícula",
+                Periodo = "20242",
+                NombreEstudiante = "María García",
+                CodigoPrograma = "54321",
+                ProgramaAcademico = "Administración de Empresas",
+                Estado = "Pendiente"
+            },
+            // Agrega más datos si es necesario
+        };
+    }
+
+    private void BuscarFormularios()
+    {
+        // Aquí puedes implementar la lógica para buscar formularios según el número de documento
+        // Por ahora, solo mostramos los datos quemados
+    }
+
+    public class Formulario
+    {
+        public string Nombre { get; set; }
+        public string Periodo { get; set; }
+        public string NombreEstudiante { get; set; }
+        public string CodigoPrograma { get; set; }
+        public string ProgramaAcademico { get; set; }
+        public string Estado { get; set; }
+    }
+}
