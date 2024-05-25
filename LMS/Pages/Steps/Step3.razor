@@ -1,0 +1,96 @@
+﻿@page "/step3"
+
+@using Radzen
+
+<div class="mb-2">
+    <RadzenBreadCrumb>
+        <RadzenBreadCrumbItem Path="/" Text="Home" />
+        <RadzenBreadCrumbItem Text="Proceso de inscripcion de matricula" />
+        <RadzenBreadCrumbItem Text="Pasos" />
+        <RadzenBreadCrumbItem Text="Paso 3: Inscripción" />
+    </RadzenBreadCrumb>
+</div>
+
+<RadzenTabs>
+    <Tabs>
+        <RadzenTabsItem Text="Inscripción">
+            <!-- Contenido para inscripción -->
+            <div class="row">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Número de Identificación:" />
+                    <RadzenTextBox @bind-Value="@identificacion" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenLabel Text="Número del Formulario:" />
+                    <RadzenTextBox @bind-Value="@formulario" />
+                </div>
+            </div>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Datos Personales">
+            <!-- Contenido para datos personales -->
+            <div class="row">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Nombre:" />
+                    <RadzenTextBox @bind-Value="@nombre" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenLabel Text="Apellido:" />
+                    <RadzenTextBox @bind-Value="@apellido" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <RadzenLabel Text="Correo Electrónico:" />
+                    <RadzenTextBox @bind-Value="@correo" />
+                </div>
+                <div class="col-md-6">
+                    <RadzenLabel Text="Teléfono:" />
+                    <RadzenTextBox @bind-Value="@telefono" />
+                </div>
+            </div>
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Adicional">
+            <!-- Contenido adicional -->
+            <!-- Agrega aquí los campos adicionales que necesites -->
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Familiar">
+            <!-- Contenido familiar -->
+            <!-- Agrega aquí los campos relacionados con la información familiar -->
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Colegio">
+            <!-- Contenido del colegio -->
+            <!-- Agrega aquí los campos relacionados con el historial educativo del colegio -->
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Profesional">
+            <!-- Contenido profesional -->
+            <!-- Agrega aquí los campos relacionados con la educación o experiencia profesional -->
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Otros">
+            <!-- Contenido adicional -->
+            <!-- Agrega aquí los campos adicionales relevantes -->
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Experiencia Laboral">
+            <!-- Contenido de experiencia laboral -->
+            <!-- Agrega aquí los campos relacionados con la experiencia laboral -->
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Referencias Personales">
+            <!-- Contenido de referencias personales -->
+            <!-- Agrega aquí los campos para referencias personales -->
+        </RadzenTabsItem>
+        <RadzenTabsItem Text="Pruebas de Estado">
+            <!-- Contenido de pruebas de estado -->
+            <!-- Agrega aquí los campos relacionados con pruebas de estado o certificaciones -->
+        </RadzenTabsItem>
+    </Tabs>
+</RadzenTabs>
+
+@code {
+    private string identificacion;
+    private string formulario;
+    private string nombre;
+    private string apellido;
+    private string correo;
+    private string telefono;
+    // Puedes agregar más variables según sea necesario para otros campos
+}
+
