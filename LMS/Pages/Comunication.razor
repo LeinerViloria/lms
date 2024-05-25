@@ -1,0 +1,42 @@
+﻿@page "/comunication"
+@using System.ComponentModel.DataAnnotations
+
+<div class="mb-2">
+    <RadzenBreadCrumb>
+        <RadzenBreadCrumbItem Path="/" Text="Home" />
+        <RadzenBreadCrumbItem Text="Comunicación" />
+        <RadzenBreadCrumbItem Text="Mensajes" />
+    </RadzenBreadCrumb>
+</div>
+
+<h2 class="text-center mb-4">¡Déjanos tu mensaje!</h2>
+
+<div class="d-flex justify-content-center">
+    <div class="card" style="width: 80%;">
+        <div class="card-body">
+            <EditForm Model="@Model" OnSubmit="EnviarComunicacion">
+                <div class="form-group">
+                    <label for="mensaje">Mensaje:</label>
+                    <textarea id="mensaje" class="form-control" @bind="@Model.Message" rows="5"></textarea>
+                </div>
+                <div class="text-center mt-2">
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Enviar" Class="btn-primary btn-lg" />
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    public MessageDTO Model { get; set; } = new();
+
+    public class MessageDTO
+    {
+        [Required]
+        public string Message { get; set; } = null!;
+    }
+
+    async Task EnviarComunicacion()
+    {
+    }
+}
